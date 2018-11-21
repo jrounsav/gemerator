@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import subprocess, sys, getopt, time, shlex
+from gemlocale import validLocations
 # commands = [ "echo worksssssss" ]
 # programs = [subprocess.Popen(c.split()) for c in commands]
 
@@ -8,8 +9,6 @@ import subprocess, sys, getopt, time, shlex
 #         print arg
 
 # main(sys.argv[1:])
-# commands = [ "echo worksssssss" ]
-# programs = [subprocess.Popen(c.split()) for c in commands]
 
 ##### Get to this
 # convert -size $sizex"x"$sizey xc:none -fill none \
@@ -43,5 +42,11 @@ viewportSize = str(viewportWidth) + "x" + str(viewportHeight)
 
 print("Viewport size of: " + viewportSize)
 
-commands = """convert -size """ + viewportSize + """ xc:none -fill none -draw "fill #8C1D40 stroke none polygon 30,50 110,50 70,130" generated.gif"""
+# Baseline command to initiate the draw space
+convert = "convert -size " + viewportSize + " xc:white -fill none"
+validLocations(viewportMultiplier, gemstoneMultiplier)
+
+
+
+
 # programs = [subprocess.Popen(shlex.split(commands))]
