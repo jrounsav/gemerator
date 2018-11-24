@@ -44,7 +44,8 @@ print("Viewport size of: " + viewportSize)
 
 # Baseline command to initiate the draw space
 convert = "convert -size " + viewportSize + " xc:white -fill none"
-validLocations(viewportMultiplier, gemstoneMultiplier)
+nodes = validLocations(viewportMultiplier, gemstoneMultiplier)
+
 
 
 

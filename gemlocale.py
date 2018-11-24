@@ -4,10 +4,6 @@ These helper functions find all of the nodes from which we can generate gemstone
 
 This logic currently assumes that we are building out from the center.
 '''
-
-
-
-
 unitWidth=14
 unitHeight=16
 
