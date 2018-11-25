@@ -12,10 +12,10 @@ TODO:   - Randomly place and generate gemstones on nodes
         - Determine future of strokes, given that they can get pointy
         - Build secondary command line interface that accepts arguments
             only. Rather than prompt a user for config input.
+        - Generate proper names for generated files.
+        - Accept a count for the number of views desired
+        - Accept counts for gemstone proclivity
 '''
-
-# commands = [ "echo worksssssss" ]
-# programs = [subprocess.Popen(c.split()) for c in commands]
 
 # def main(argv):
 #     for arg in argv:
@@ -72,14 +72,12 @@ print("All provided colors" + str(colors))
 
 # Build a gemstone
 # NOTE: This is a test. We need to use the valid locations and be random about the generation.
+baseCommand = 'convert -size ' + viewportSize + ' xc:white -fill none '
+
 center=getCenterNode(viewportWidth, viewportHeight)
 gemstoneString=buildGemstone(center, gemstoneMultiplier, config)
-
-baseCommand = 'convert -size ' + viewportSize + ' xc:white -fill none '
 baseCommand += gemstoneString
-
 baseCommand += "generated.png"
 print(baseCommand)
 commands = baseCommand
-
 programs = [subprocess.Popen(shlex.split(commands))]
