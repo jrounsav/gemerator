@@ -3,6 +3,16 @@ import subprocess, sys, getopt, time, shlex
 from gemlocale import validLocations, getCenterNode
 from gemstone import buildGemstone
 from configuration import Configuration
+'''
+Python script that generates an ImageMagick convert command.
+
+TODO:   - Randomly place and generate gemstones on nodes
+        - Apply configuration colors
+        - Enable color randomization
+        - Determine future of strokes, given that they can get pointy
+        - Build secondary command line interface that accepts arguments
+            only. Rather than prompt a user for config input.
+'''
 
 # commands = [ "echo worksssssss" ]
 # programs = [subprocess.Popen(c.split()) for c in commands]
@@ -51,10 +61,6 @@ viewportHeight=16*viewportMultiplier
 viewportSize = str(viewportWidth) + "x" + str(viewportHeight)
 print("Viewport size of: " + viewportSize)
 
-
-# Baseline command to initiate the draw space
-convert = "convert -size " + viewportSize + " xc:white -fill none"
-
 # Get all valid locations for building gems
 nodes = validLocations(viewportMultiplier, gemstoneMultiplier)
 print("All nodes" + str(nodes))
@@ -67,8 +73,13 @@ print("All provided colors" + str(colors))
 # Build a gemstone
 # NOTE: This is a test. We need to use the valid locations and be random about the generation.
 center=getCenterNode(viewportWidth, viewportHeight)
-buildGemstone(center, gemstoneMultiplier, config)
+gemstoneString=buildGemstone(center, gemstoneMultiplier, config)
 
+baseCommand = 'convert -size ' + viewportSize + ' xc:white -fill none '
+baseCommand += gemstoneString
 
+baseCommand += "generated.png"
+print(baseCommand)
+commands = baseCommand
 
-# programs = [subprocess.Popen(shlex.split(commands))]
+programs = [subprocess.Popen(shlex.split(commands))]
