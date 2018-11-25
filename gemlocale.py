@@ -16,10 +16,8 @@ def validLocations(viewMult, gemMult):
     viewHeight=unitHeight*viewMult
     view=[viewWidth, viewHeight]
     center = getCenterNode(viewWidth, viewHeight)
-    print("Center: " + str(center))
+    # print("Center: " + str(center))
     nodes = getNodeCoords(center, view, gemMult)
-    nodes.append(center)
-    print("All nodes" + str(nodes))
     return nodes
     
 '''
@@ -41,17 +39,17 @@ def getNodeCoords(center, view, gemMult):
     startX = center[0]
     shiftXValue = 0.5*gemWidth
     shiftYValue = gemHeight-(4*gemMult)
-    print("Shift value: " + str(shiftYValue))
+    # print("Shift value: " + str(shiftYValue))
     shift=False
     # Get valid centers AT and ABOVE the center
     while startY >= 0:
         if shift == True:
             startX -= shiftXValue
         else:
-            startX += shiftXValue
+            startX = center[0]
         inlineVals = inlineXvals(startX, view[0], gemWidth)
         for val in inlineVals:
-            validNodes.append([int(val), startY])
+            validNodes.append([int(val), int(startY)])
 
         shift = not shift
         startY -= shiftYValue
@@ -64,10 +62,10 @@ def getNodeCoords(center, view, gemMult):
         if shift == True:
             startX -= shiftXValue
         else:
-            startX += shiftXValue
+            startX = center[0]
         inlineVals = inlineXvals(startX, view[0], gemWidth)
         for val in inlineVals:
-            validNodes.append([int(val), startY])
+            validNodes.append([int(val), int(startY)])
 
         shift = not shift
         startY += shiftYValue
@@ -79,6 +77,8 @@ def getNodeCoords(center, view, gemMult):
 Given a start, get all nodes to the left and right of the start point.
 '''
 def inlineXvals(mainX, viewEnd, gemWidth):
+    # print("Gem width here" + str(gemWidth))
+    # print("Start here" + str(mainX))
     x = mainX
     validX = []
     while x >= 0:
