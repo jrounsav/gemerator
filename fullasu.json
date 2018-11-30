@@ -1,0 +1,8 @@
+{
+    "colors": "#F7C44D, #812841, #FFF",
+    "viewportMultiplier": 75,
+    "gemstoneMultiplier": 18,
+    "placement": "random",
+    "propensity": 100,
+    "backgroundColor": "white"
+}
