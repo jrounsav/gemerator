@@ -1,30 +1,21 @@
 #!/usr/bin/python
-import subprocess, sys, getopt, time, shlex
+import subprocess, sys, getopt, time, shlex, json
+from pprint import pprint
 from gemlocale import validLocations, getCenterNode
 from gemstone import buildGemstone
 from configuration import Configuration
+from utility import buildCommand
 '''
 Python script that generates an ImageMagick convert command.
 
 TODO:   - Randomly place and generate gemstones on nodes
-        - Apply configuration colors
-        - Enable color randomization
-        - Determine future of strokes, given that they can get pointy
-        - Build secondary command line interface that accepts arguments
-            only. Rather than prompt a user for config input.
         - Generate proper names for generated files.
         - Accept a count for the number of views desired
         - Accept counts for gemstone proclivity
 '''
 
-# def main(argv):
-#     for arg in argv:
-#         print arg
-
-# main(sys.argv[1:])
-
 ##### Get to this
-# convert -size $sizex"x"$sizey xc:none -fill none \
+# convert -size 14x16 xc:none -fill none \
 #           -draw "fill #8C1D40 stroke none polygon 30,50 110,50 70,130" \
 #           -draw "fill #8C1D40 stroke none polygon 30,50 110,50 70,130" \
 #           ~/generated.gif
@@ -35,6 +26,7 @@ print(chr(27) + "[2J")
 
 unitWidth=14
 unitHeight=16
+config = Configuration()
 
 welcome="Welcome to the AR Sticker Generator! \n"
 description="""This program attempts to generate a random number of semi-randomly
@@ -46,38 +38,51 @@ Please note that the base size of a gem(in pixels) is 14x16, and the scales must
 some multiple of that.
 """
 
-print(welcome)
-print(description)
+def noConfigProvided():
+    print(welcome)
+    print(description)
 
-## Get user input Here
-viewportMultiplierRaw= input("Please enter a viewport multiplier: ")
-viewportMultiplier=int(viewportMultiplierRaw)
-gemstoneMultiplierRaw= input("Please enter a gemstone size multiplier less than or equal to the viewport: ")
-gemstoneMultiplier=int(gemstoneMultiplierRaw)
-colors= input("Please enter a csv of HEX colors that you would like to use on the stickers: ")
+    ## Get user input Here
+    viewportMultiplierRaw= input("Please enter a viewport multiplier: ")
+    viewportMultiplier=int(viewportMultiplierRaw)
+    gemstoneMultiplierRaw= input("Please enter a gemstone size multiplier less than or equal to the viewport: ")
+    gemstoneMultiplier=int(gemstoneMultiplierRaw)
+    colors= input("Please enter a csv of HEX colors that you would like to use on the stickers: ")
+    placement= input("Please define how you would like the gemstones to be placed: ")
+    propensity= input("What percentage of the viewport would you like populated: ")
 
-viewportWidth=14*viewportMultiplier
-viewportHeight=16*viewportMultiplier
-viewportSize = str(viewportWidth) + "x" + str(viewportHeight)
-print("Viewport size of: " + viewportSize)
+    # Start building the configuration object
+    colors = config.setColors(colors)
+    config.setViewportMultiplier(viewportMultiplier)
+    config.setGemstoneMultiplier(gemstoneMultiplier)
+    config.setPlacement(placement)
+    config.setPropensity(propensity)
+
+def configProvided(file):
+    # Open and utilize file
+    print("Configuration coming from: " + file)
+    with open(file) as f:
+        data = json.load(f)
+    config.setColors(data["colors"])
+    config.setViewportMultiplier(data["viewportMultiplier"])
+    config.setGemstoneMultiplier(data["gemstoneMultiplier"])
+    config.setPlacement(data["placement"])
+    config.setPropensity(data["propensity"])
+    config.setBackgroundColor(data["backgroundColor"])
+
+# If a config file is provided then we attempt to use it
+def invokeBranch(argv):
+    if len(argv) > 0:
+        configProvided(argv[0])
+    else:
+        noConfigProvided()
+
+invokeBranch(sys.argv[1:])
 
 # Get all valid locations for building gems
-nodes = validLocations(viewportMultiplier, gemstoneMultiplier)
-print("All nodes" + str(nodes))
+nodes = validLocations(config)
 
-# Start building the configuration object
-config = Configuration()
-colors = config.setColors(colors)
-print("All provided colors" + str(colors))
+# Generate the ImageMagick command that is to be passed back to the shell
+commands = buildCommand(nodes, config)
 
-# Build a gemstone
-# NOTE: This is a test. We need to use the valid locations and be random about the generation.
-baseCommand = 'convert -size ' + viewportSize + ' xc:white -fill none '
-
-center=getCenterNode(viewportWidth, viewportHeight)
-gemstoneString=buildGemstone(center, gemstoneMultiplier, config)
-baseCommand += gemstoneString
-baseCommand += "generated.png"
-print(baseCommand)
-commands = baseCommand
 programs = [subprocess.Popen(shlex.split(commands))]

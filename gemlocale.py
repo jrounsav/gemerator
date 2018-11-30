@@ -1,25 +1,42 @@
+import random
 '''
 Gem Locale
 These helper functions find all of the nodes from which we can generate gemstone polygons inside of a viewport.
 
 This logic currently assumes that we are building out from the center.
 '''
-unitWidth=14
-unitHeight=16
 
 '''
 Return the center points of all possible gemstones in a viewport.
 Note that this includes gems on the border.
 '''
-def validLocations(viewMult, gemMult):
-    viewWidth=unitWidth*viewMult
-    viewHeight=unitHeight*viewMult
+def validLocations(config):
+    viewWidth=config.viewportWidth
+    viewHeight=config.viewportHeight
+
     view=[viewWidth, viewHeight]
     center = getCenterNode(viewWidth, viewHeight)
-    # print("Center: " + str(center))
-    nodes = getNodeCoords(center, view, gemMult)
+
+    nodes = getNodeCoords(center, view, config)
+    nodes = applyPlacement(nodes, config)
     return nodes
-    
+
+def applyPlacement(nodes, config):
+    placement = config.placement
+    if placement == "random":
+        nodes=randomPropensity(nodes, config)
+    elif placement == "circulars":
+        print("Circulars applied")
+    elif placement == "triad":
+        print("Triad applied")
+    return nodes
+
+def randomPropensity(nodes, config):
+    propensity=config.propensity/100
+    print("Propensity is " + str(propensity))
+    nodes=random.sample(nodes,int(len(nodes)*(propensity)))
+    return nodes
+
 '''
 Returns the dead center of the viewport. all gems are built off of this point
 '''
@@ -30,16 +47,16 @@ def getCenterNode(width, height):
 Get the coordinates of all non-center nodes.
 A node is the center of a gemstone polygon to be built out
 '''
-def getNodeCoords(center, view, gemMult):
-    gemWidth = unitWidth*gemMult
-    gemHeight = unitHeight*gemMult
+def getNodeCoords(center, view, config):
+    gemWidth = config.gemstoneWidth
+    gemHeight = config.gemstoneHeight
+    gemMult = config.gemstoneMultiplier
     validNodes = []
 
     startY = center[1]
     startX = center[0]
     shiftXValue = 0.5*gemWidth
     shiftYValue = gemHeight-(4*gemMult)
-    # print("Shift value: " + str(shiftYValue))
     shift=False
     # Get valid centers AT and ABOVE the center
     while startY >= 0:
@@ -69,16 +86,12 @@ def getNodeCoords(center, view, gemMult):
 
         shift = not shift
         startY += shiftYValue
-    
-    # print("All valid nodes" + str(validNodes))
     return validNodes
 
 '''
 Given a start, get all nodes to the left and right of the start point.
 '''
 def inlineXvals(mainX, viewEnd, gemWidth):
-    # print("Gem width here" + str(gemWidth))
-    # print("Start here" + str(mainX))
     x = mainX
     validX = []
     while x >= 0:

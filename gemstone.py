@@ -2,32 +2,32 @@
 This file contains all abstracted functions necessary to generate 
 pieces of the gemstones.
 '''
-def buildGemstone(center, gemMult, config):
-    print("Should build gemstone")
+def buildGemstone(center, config):
     
     # Generate Top of Gemstone
-    topLeftString=buildTopLeft(center, gemMult)
-    topString=buildTop(center, gemMult)
-    topRightString=buildTopRight(center, gemMult)
+    topLeftString=buildTopLeft(center, config)
+    topString=buildTop(center, config)
+    topRightString=buildTopRight(center, config)
     topSection=topLeftString + topString + topRightString
 
     # Generate middle of Gemstone
-    left=buildLeft(center, gemMult)
-    middleLeft=buildLeftMiddle(center, gemMult)
-    middle=buildMiddle(center, gemMult)
-    middleRight=buildRightMiddle(center, gemMult)
-    right=buildRight(center, gemMult)
+    left=buildLeft(center, config)
+    middleLeft=buildLeftMiddle(center, config)
+    middle=buildMiddle(center, config)
+    middleRight=buildRightMiddle(center, config)
+    right=buildRight(center, config)
     middleSection=left+middleLeft+middle+middleRight+right
 
     # Generate bottom of Gemstone
-    bottomLeft=buildBottomLeft(center, gemMult)
-    bottomRight=buildBottomRight(center, gemMult)
+    bottomLeft=buildBottomLeft(center, config)
+    bottomRight=buildBottomRight(center, config)
     bottomSection=bottomLeft+bottomRight
 
     wholeString = topSection + middleSection + bottomSection
     return wholeString
 
-def buildTopLeft(center, multiplier):
+def buildTopLeft(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(7*multiplier)
     pointOneY=center[1]-(4*multiplier)
@@ -45,10 +45,11 @@ def buildTopLeft(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildTop(center, multiplier):
+def buildTop(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(4*multiplier)
     pointOneY=center[1]-(3*multiplier)
@@ -66,10 +67,11 @@ def buildTop(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildTopRight(center, multiplier):
+def buildTopRight(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]+(7*multiplier)
     pointOneY=center[1]-(4*multiplier)
@@ -87,10 +89,11 @@ def buildTopRight(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildLeft(center, multiplier):
+def buildLeft(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(7*multiplier)
     pointOneY=center[1]-(4*multiplier)
@@ -108,10 +111,11 @@ def buildLeft(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildLeftMiddle(center, multiplier):
+def buildLeftMiddle(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(7*multiplier)
     pointOneY=center[1]+(4*multiplier)
@@ -129,10 +133,11 @@ def buildLeftMiddle(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildMiddle(center, multiplier):
+def buildMiddle(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(4*multiplier)
     pointOneY=center[1]-(3*multiplier)
@@ -150,10 +155,11 @@ def buildMiddle(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildRightMiddle(center, multiplier):
+def buildRightMiddle(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]+(4*multiplier)
     pointOneY=center[1]-(3*multiplier)
@@ -171,10 +177,11 @@ def buildRightMiddle(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildRight(center, multiplier):
+def buildRight(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]+(7*multiplier)
     pointOneY=center[1]-(4*multiplier)
@@ -192,10 +199,11 @@ def buildRight(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildBottomLeft(center, multiplier):
+def buildBottomLeft(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]-(7*multiplier)
     pointOneY=center[1]+(4*multiplier)
@@ -213,10 +221,11 @@ def buildBottomLeft(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
-def buildBottomRight(center, multiplier):
+def buildBottomRight(center, config):
+    multiplier=config.gemstoneMultiplier
     # Get coordinates of first corner
     pointOneX=center[0]+(7*multiplier)
     pointOneY=center[1]+(4*multiplier)
@@ -234,17 +243,19 @@ def buildBottomRight(center, multiplier):
 
     # Put ImageMagick string together
     coordinates=[coordOne, coordTwo, coordThree]
-    drawString = makeString(coordinates)
+    drawString = makeString(coordinates, config)
     return drawString
 
 '''
 Given an array of string coordinates, greate the string to be used
 by the ImageMagick function.
 '''
-def makeString(points):
-    # Example with stroke
-    # TODO: Add a configuration option that will allow stroke to be set
-    # TODO: Use the colors set by the configuration
-    drawString='-draw "fill #8C1D40 stroke #FFC23F stroke-width 3 polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
+def makeString(points, config):
+    color1=config.getRandomColor()
+    color2="#FFC23F"
+    drawString='-draw "fill ' + color1 + ' polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
+    # drawString='-draw "fill ' + color1 + ' stroke ' + color2 + ' stroke-width 3 polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
+    # drawString='-draw "fill ' + color + ' stroke #FFC23F stroke-width 3 polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
+    # drawString='-draw "fill ' + color + ' stroke #FFC23F stroke-width 3 polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
     # drawString=' -draw "fill #8C1D40 stroke none polygon ' + points[0] + ' ' + points[1] + ' ' + points[2] + '" '
     return drawString
