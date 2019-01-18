@@ -4,5 +4,6 @@
     "gemstoneMultiplier": 18,
     "placement": "random",
     "propensity": 100,
-    "backgroundColor": "white"
+    "backgroundColor": "white",
+    "numberOf": 20
 }

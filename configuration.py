@@ -20,6 +20,9 @@ class Configuration:
     includeBorders=False
     propensity=100
     backgroundColor="white"
+    numberOf=1
+    def setNumberOfGems(self, count):
+        self.numberOf=count
     def setBackgroundColor(self, color):
         self.backgroundColor=color
     def setPropensity(self, propensity):

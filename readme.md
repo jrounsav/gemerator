@@ -1,3 +1,11 @@
+# Gemerator
+
+This python3 script utilizesd Image Magick to randomly generate and place randomly colored gemstones.
+
+Generated files are dropped into a folder called generated.
+
+Can be run via prompts or through the use of a JSON config file.
+
 # Gemstone Gen
 
 - Define a few presets that will allow explicit placement and generation of assets.

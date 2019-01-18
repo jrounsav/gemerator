@@ -8,10 +8,11 @@ from utility import buildCommand
 '''
 Python script that generates an ImageMagick convert command.
 
-TODO:   - Randomly place and generate gemstones on nodes
-        - Generate proper names for generated files.
-        - Accept a count for the number of views desired
-        - Accept counts for gemstone proclivity
+TODO:   
+        - Handle gemstone circulars
+        - Handle gemstone triad
+        - Handle custom asset placement
+        - Handle custom Coordinate selection
 '''
 
 ##### Get to this
@@ -69,6 +70,7 @@ def configProvided(file):
     config.setPlacement(data["placement"])
     config.setPropensity(data["propensity"])
     config.setBackgroundColor(data["backgroundColor"])
+    config.setNumberOfGems(data["numberOf"])
 
 # If a config file is provided then we attempt to use it
 def invokeBranch(argv):
@@ -79,10 +81,11 @@ def invokeBranch(argv):
 
 invokeBranch(sys.argv[1:])
 
-# Get all valid locations for building gems
-nodes = validLocations(config)
+for x in range(config.numberOf):
+    # Get all valid locations for building gems
+    nodes = validLocations(config)
 
-# Generate the ImageMagick command that is to be passed back to the shell
-commands = buildCommand(nodes, config)
+    # Generate the ImageMagick command that is to be passed back to the shell
+    commands = buildCommand(nodes, config, x)
 
-programs = [subprocess.Popen(shlex.split(commands))]
+    programs = [subprocess.Popen(shlex.split(commands))]
